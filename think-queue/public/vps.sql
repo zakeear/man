@@ -300,12 +300,6 @@ CREATE TABLE `snapshot`	(
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of snapshot
--- ----------------------------
-INSERT INTO `snapshot` VALUES (1, '105bb633cde41', 'windows2008', '76f56f39e631a@007', 10086, 1, 1555928212);
-INSERT INTO `snapshot` VALUES (2, '9a75abdd9b3e8', '08英文-电脑管家版-20180330', 'e2556f3a2e6be@007', 3389, 1, 1556971766);
-
--- ----------------------------
 -- Table structure for ticket
 -- ----------------------------
 DROP TABLE IF EXISTS `ticket`;

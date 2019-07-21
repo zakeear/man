@@ -1,0 +1,158 @@
+{extend name="base/home"}
+{block name="title"}添加主机{/block}
+{block name="breadcrumb"}<ol class="breadcrumb pull-left"><li><a href="{:url('index/index')}">主页</a></li><li><a href="{:url('server/index')}">主机</a></li><li class="active">添加</li></ol>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">添加主机</h3></div>
+			<div class="panel-body">
+				<form id="basic-form" action="add.html" method="post" style="display:none;">
+					<div>
+						<h3>主机位置</h3>
+						<section>
+							{volist name='dc' id="vo"}
+							<div class="form-group clearfix">
+								<label class="col-lg-2 control-label">{$vo.name}</label>
+								<div class="col-lg-10">
+									{volist name='vo.sub' id="v"}
+									<div class="radio radio-info radio-inline">
+										<input type="radio" id="dc{$v.id}" value="{$v.dcid}" name="DCID">
+										<label for="dc{$v.id}">
+										{$v.name}
+										<span><img src="{$v.flags}"></span>
+										</label>
+									</div>
+									{/volist}
+								</div>
+							</div>
+							{/volist}
+						</section>
+						<h3>操作系统</h3>
+						<section>
+							{volist name='os' id="value"}
+							<div class="form-group clearfix">
+								<label class="col-lg-2 control-label"><td>{$value.name}</td></label>
+								<div class="col-lg-10">
+									{volist name='value.sub' id="v"}
+									<div class="radio radio-info radio-inline"><input type="radio" id="os{$v.id}" value="{$v.osid}" name="OSID"><label for="os{$v.id}">{$v.name}</label></div>
+									{/volist}
+								</div>
+							</div>
+							{/volist}
+							<div class="form-group clearfix">
+								<label class="col-lg-2 control-label"><td>快照</td></label>
+								<div class="col-lg-10">
+									{volist name='snapshot' id="v"}
+									<div class="radio radio-info radio-inline">
+										<input type="radio" id="sn{$v.id}" value="{$v.snapshotid}" name="SNAPSHOTID"><label for="sn{$v.id}">{$v.name}:{$v.port}</label>
+									</div>
+									{/volist}
+								</div>
+							</div>
+						</section>
+						<h3>主机配置</h3>
+						<section>
+							{volist name='host' id="vo"}
+							<div class="col-sm-6 col-md-6 col-lg-2">
+								<div class="price_card text-center">
+									<div class="pricing-header bg-primary"><span class="price">￥{:round($vo.hour*$rate,3)}/小时</span></div>
+									<label for="j01" style="font-weight:normal">
+										<ul class="price-features"><li>{$vo.cpu}核CPU</li><li>{$vo.ram}G运行内存</li><li>{$vo.ssd}GB固态硬盘</li><li>{$vo.bandwidth}G流量/月</li></ul>
+										<input type="radio" id="host{$vo.id}" value="{$vo.vpsplanid}" name="VPSPLANID" style="display:none;">
+										<a class="btn btn-primary w-md">选购</a>
+									</label>
+								</div>
+							</div>
+							{/volist}
+						</section>
+						<h3>其他配置</h3>
+						<section>
+							<div class="form-group clearfix">
+								<label class="col-lg-2 control-label">主机名</label>
+								<div class="col-lg-10">
+									<input type="text" name="hostname" class="form-control" value="{$hostname}">
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-lg-2 control-label">IPV6</label>
+								<div class="col-lg-10">
+									<div class="radio radio-info radio-inline">
+										<input type="radio" id="z01" value="yes" name="enable_ipv6">
+										<label for="z01">是</label>
+									</div>
+									<div class="radio radio-info radio-inline">
+										<input type="radio" id="z02" value="no" name="enable_ipv6" checked="checked">
+										<label for="z02">否</label>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="style"}
+<link href="/static/css/jquery.steps.css" rel="stylesheet">
+<style type="text/css">
+.control-label{width:10%;}
+@media(min-width:300px) and (max-width:1079px){.control-label{width:100%;}}
+.price{font-size:28px;padding:15px 0;}
+.radio-inline{margin-left:0!important;padding-right:10px;}
+</style>
+{/block}
+{block name="script"}
+<script src="/static/js/jquery.steps.min.js"></script>
+<script>
+mainnav("{:url('server/index')}");
+$(function(){
+	$(document).on("click","input[name='OSID']",function(){
+		if($("input[name='SNAPSHOTID']:checked").val()){
+			$('input:radio[name="SNAPSHOTID"]').attr("checked",false);
+			$(this).attr("checked",true);
+			//alert("您是..." + $(this).val());
+		}
+	});
+	$(document).on("click","input[name='SNAPSHOTID']",function(){
+		if($("input[name='OSID']:checked").val()){
+			$('input:radio[name="OSID"]').attr("checked",false);
+			$(this).attr("checked",true);
+			//alert("您是..." + $(this).val());
+		}
+	});
+	$("body").on('click',".price_card",function(){
+		$('.pricing-header').removeClass('bg-success');
+		$('.btn').removeClass('btn-success');
+		$(this).find('div').addClass('bg-success');
+		$(this).find('label a').addClass('btn-success');
+		$(this).find('input').prop('checked',true)
+	});
+	$("#basic-form div").steps({
+		headerTag:"h3",bodyTag:"section",transitionEffect:"slideLeft",autoFocus:true,labels:{cancel:"取消",finish:"添加",next:"下一步",previous:"上一步",loading:"加载中..."},onStepChanging:function(event,currentIndex,newIndex){
+			if(currentIndex==0 && $("input[name='DCID']:checked").val()==null){
+				swal("提示!",'请选择服务器位置！',"warning");
+				return false;
+			}
+			if(currentIndex==1){
+				if($("input[name='OSID']:checked").val()==null && $("input[name='SNAPSHOTID']:checked").val()==null){
+					swal("提示!",'请选择操作系统或者快照！',"warning");
+					return false;
+				}
+			}
+			if(currentIndex==2 && $("input[name='VPSPLANID']:checked").val()==null){
+				swal("提示!",'请选择主机配置！',"warning");
+				return false;
+			}
+			return true;
+		},onFinishing:function(event,currentIndex){
+			$("#basic-form").submit();
+			return true;
+		}
+	});
+	$("#basic-form").show();
+});
+</script>
+{/block}

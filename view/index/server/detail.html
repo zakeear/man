@@ -1,0 +1,71 @@
+{extend name="base/home"}
+{block name="title"}主机详情{/block}
+{block name="breadcrumb"}<ol class="breadcrumb pull-left"><li><a href="{:url('index/index')}">主页</a></li><li><a href="{:url('server/index')}">主机</a></li><li class="active">详情</li></ol>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">主机详情</h3></div>
+			<div class="panel-body">
+				<form class="form-horizontal" role="form" method="post">
+					<div class="form-group">
+						<label class="col-md-1 control-label">IP地址</label>
+						<div class="col-md-10"><p class="form-control-static">{$server.ip_address}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">root密码</label>
+						<div class="col-md-10"><p class="form-control-static">{$server.password}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">主机名</label>
+						<div class="col-md-10"><p class="form-control-static">{$server.hostname}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">主机位置</label>
+						<div class="col-md-10"><p class="form-control-static">{:get_dc($server.dcid)}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">操作系统</label>
+						<div class="col-md-10"><p class="form-control-static">{:get_os($server.osid)}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">主机配置</label>
+						<div class="col-md-10"><p class="form-control-static">{:get_host($server.vpsplanid)}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">主机费用</label>
+						<div class="col-md-10"><p class="form-control-static">{$server.money}/小时</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">主机状态</label>
+						<div class="col-md-10"><p class="form-control-static">{$enum->color('hostStatus',$server.status,'colorsA')|raw}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">添加时间</label>
+						<div class="col-md-10"><p class="form-control-static">{$server.time|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					{neq name="server.op_time" value="0"}
+					<div class="form-group">
+						<label class="col-md-1 control-label">操作时间</label>
+						<div class="col-md-10"><p class="form-control-static">{$server.op_time|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					{/neq}
+					{neq name="server.destroy" value="0"}
+					<div class="form-group">
+						<label class="col-md-1 control-label">删除时间</label>
+						<div class="col-md-10"><p class="form-control-static">{$server.destroy|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					{/neq}
+					<div class="form-group">
+						<div class="col-lg-offset-1 col-lg-10">
+							<input type="hidden" class="form-control" value="{$server.id}">
+							<button class="btn btn-default" type="button" onclick="window.location.href='index.html';return false;">返回</button>
+						</div>
+					</div>
+				</form>
+			</div> 
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}<script>mainnav("{:url('server/index')}");</script>{/block}

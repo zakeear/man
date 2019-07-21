@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>操作锁定</title>
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="/static/css/core.css" rel="stylesheet" type="text/css">
+	<link href="/static/css/responsive.css" rel="stylesheet" type="text/css">
+	<script src="/static/js/modernizr.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+<div class="wrapper-page">
+	<div class="panel panel-color panel-primary panel-pages">
+		<div class="panel-heading bg-img">
+			<div class="bg-overlay"></div>
+			<h3 class="text-center m-t-10 text-white">&nbsp;</h3>
+		</div> 
+		<div class="panel-body" style="padding-top:0">
+			<form method="post" action="{:url('unlock')}" role="form" class="text-center">
+				<div class="user-thumb"><img src="/static/images/users/avatar.png" class="img-responsive img-circle img-thumbnail"></div>
+				<div class="form-group">
+					<h4>{:session('user.username')}</h4>
+					<p class="text-muted">请输入您的登录密码以解除锁定.</p>
+					<div class="input-group m-t-30">
+						<input type="password" name="password" class="form-control input-lg" placeholder="登录密码">
+						<span class="input-group-btn"><button type="submit" class="btn btn-primary btn-lg">解锁</button></span>
+					</div>
+				</div>
+				<div class="text-right"><a href="{:url('login')}">重新登录</a></div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>var resizefunc=[];</script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+</body>
+</html>

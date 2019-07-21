@@ -1,0 +1,80 @@
+{extend name="base/home"}
+{block name="title"}处理详情{/block}
+{block name="breadcrumb"}<ol class="breadcrumb pull-left"><li><a href="{:url('index/index')}">主页</a></li><li><a href="{:url('ticket/index')}">工单</a></li><li class="active">详情</li></ol>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-sm-6">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">处理详情</h3></div>
+			<div class="panel-body">
+				<form class="form-horizontal" role="form" method="post" action="{:url('replay')}">
+					{neq name="ticket.subid" value="0"}
+					<div class="form-group">
+						<label class="col-md-2 control-label">关联主机</label>
+						<div class="col-md-8"><p class="form-control-static">{$ticket.server.hostname|default=''} <a href="{:url('server/detail',['id'=>$ticket.server.id])}" target="_blank">详情</a></p></div>
+					</div>
+					{/neq}
+					<div class="form-group">
+						<label class="col-md-2 control-label">工单标题</label>
+						<div class="col-md-10"><p class="form-control-static">{$ticket.title}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">工单内容</label>
+						<div class="col-md-10"><p class="form-control-static">{$ticket.content}</p></div>
+					</div>
+					{neq name="ticket.status" value="3"}
+					<div class="form-group">
+						<label class="col-md-2 control-label">处理类型</label>
+						<div class="col-md-8">
+							<select name="type" aria-controls="datatable" class="form-control input-sm m-l-5">
+								{foreach $enum->withIdName('ticketDoUser') as $key=>$vo}
+								<option value="{$vo.id}" {if condition="$vo['id'] eq input('type')"}selected="selected"{/if}>{$vo.name}</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">处理内容</label>
+						<div class="col-md-8"><textarea rows="3" cols="20" name="content" class="form-control"></textarea></div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<input type="hidden" name="id" class="form-control" value="{$ticket.id}">
+							<button class="btn btn-info" type="submit">确认</button>
+							<button class="btn btn-default" type="button" onclick="javascript:history.back(-1);return false;">返回</button>
+						</div>
+					</div>
+					{/neq}
+				</form>
+			</div> 
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">处理记录</h3></div>
+			<div class="panel-body">
+				<div class="card-body"> 
+					<div class="chat-conversation">
+						<ul class="conversation-list" style="overflow: hidden; outline: currentcolor none medium;" tabindex="2">
+							{volist name='ticket.log' id="vo"}
+							{neq name="vo.uid" value="0"}<li class="clearfix odd">{else/}<li class="clearfix">{/neq}
+								<div class="chat-avatar">
+									<i>{$vo.time|date='m-d H:i'}</i>
+								</div>
+								<div class="conversation-text">
+									<div class="ctext-wrap">
+										<i>{neq name="vo.uid" value="0"}{$vo.user}->{else/}{$vo.admin}->{/neq}{$enum->value('ticketStatus',$vo['type'],'colorsA')|raw}</i>
+										<p>{$vo.content}</p>
+									</div>
+								</div>
+							</li>
+							{/volist}
+						</div>
+					</div>
+				</div> 
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}<script>mainnav("{:url('ticket/index')}");</script>{/block}

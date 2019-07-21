@@ -1,0 +1,82 @@
+{extend name="base/public"}
+{block name="title"}主页{/block}
+{block name="breadcrumb"}<h4 class="pull-left page-title">Welcome !</h4>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-md-6 col-sm-6 col-lg-3">
+		<div class="mini-stat clearfix bx-shadow bg-info">
+			<span class="mini-stat-icon"><i class="md md-computer" style="line-height:inherit;"></i></span>
+			<div class="mini-stat-info text-right"><span class="counter">{$data.total_server}</span>总主机</div>
+			<div>
+				<div class="m-t-20"><h5 class="text-white m-0">近一周新增 <span class="pull-right">{$data.week_server}</span></h5></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-sm-6 col-lg-3">
+		<div class="mini-stat clearfix bg-purple bx-shadow">
+			<span class="mini-stat-icon"><i class="md md-event-note" style="line-height:inherit;"></i></span>
+			<div class="mini-stat-info text-right"><span class="counter">{$data.total_money}</span>帐单总额</div>
+			<div>
+				<div class="m-t-20"><h5 class="text-white m-0">近一周账单总额 <span class="pull-right">{$data.week_money}</span></h5></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-sm-6 col-lg-3">
+		<div class="mini-stat clearfix bg-success bx-shadow">
+			<span class="mini-stat-icon"><i class="md md-desktop-mac" style="line-height:inherit;"></i></span>
+			<div class="mini-stat-info text-right"><span class="counter">{$data.total_destroy}</span>总过期主机</div>
+			<div>
+				<div class="m-t-20"><h5 class="text-white m-0">近一周过期 <span class="pull-right">{$data.week_destroy}</span></h5></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-sm-6 col-lg-3">
+		<div class="mini-stat clearfix bg-primary bx-shadow">
+			<span class="mini-stat-icon"><i class="md md-account-child" style="line-height:inherit;"></i></span>
+			<div class="mini-stat-info text-right"><span class="counter">{$data.total_user}</span>总用户</div>
+			<div>
+				<div class="m-t-20"><h5 class="text-white m-0">近一周注册 <span class="pull-right">{$data.week_user}</span></h5></div>
+			</div>
+		</div>
+	</div>
+</div> 
+<div class="row">
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h4 class="panel-title">最新主机</h4></div>
+			<div class="panel-body">
+				<div class="inbox-widget mx-box" style="max-height:472px;min-height:472px">
+					{volist name='server' id="vo"}
+					<a href="{:url('server/detail',['id'=>$vo['id']])}">
+						<div class="inbox-item">
+							<p class="inbox-item-author">{$vo.hostname|default="未定义"|raw}</p>
+							<p class="inbox-item-text">{neq name="vo.ip_address" value=""}{$vo.ip_address}{/neq}</p>
+							<p class="inbox-item-date">{$vo.time|date='Y-m-d H:i:s'}</p>
+						</div>
+					</a>
+					{/volist}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h4 class="panel-title">最新用户</h4></div>
+			<div class="panel-body">
+				<div class="inbox-widget mx-box" style="max-height:472px;min-height:472px">
+					{volist name='user' id="vo"}
+					<a href="{:url('member/detail',['id'=>$vo['id']])}">
+						<div class="inbox-item">
+							<p class="inbox-item-author">{$vo.nickname|default="未设置"|raw}</p>
+							<p class="inbox-item-text">{$vo.username}</p>
+							<p class="inbox-item-date">{$vo.create_time|date='Y-m-d H:i:s'}</p>
+						</div>
+					</a>
+					{/volist}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}<script>mainnav("{:url('index/index')}");</script>{/block}

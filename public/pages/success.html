@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+	<title>操作提示</title>
+	<link href="/static/css/message.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="message">
+	<p style="color:green;"><?php echo(strip_tags($msg));?></p>
+	<p class="jump">页面自动 <a id="href" href="<?php echo($url);?>">跳转</a> 等待时间： <span id="wait"><?php echo($wait);?></span></p>
+</div>
+<script type="text/javascript">
+	(function(){
+		var wait=document.getElementById('wait'),href=document.getElementById('href').href;
+		var interval=setInterval(function(){
+			var time=--wait.innerHTML;
+			if(time<=0){
+				location.href=href;
+				clearInterval(interval);
+			};
+		}, 1000);
+	})();
+</script>
+</body>
+</html>

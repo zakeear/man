@@ -1,0 +1,39 @@
+{extend name="base/public"}
+{block name="title"}添加快照{/block}
+{block name="breadcrumb"}<ol class="breadcrumb pull-left"><li><a href="{:url('index/index')}">主页</a></li><li><a href="{:url('setting/snapshot')}">快照</a></li><li class="active">添加</li></ol>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">添加快照</h3></div>
+			<div class="panel-body">
+				<form class="form-horizontal" role="form" method="post" action='add_snapshot.html'>
+					<div class="form-group">
+						<label class="col-md-1 control-label">名称</label>
+						<div class="col-md-8"><input type="text" name="name" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">SNAPSHOTID</label>
+						<div class="col-md-8"><input type="text" name="snapshotid" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">密码</label>
+						<div class="col-md-8"><input type="text" name="password" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">端口</label>
+						<div class="col-md-8"><input type="text" name="port" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-offset-1 col-lg-10">
+							<button class="btn btn-success" type="submit">确认</button>
+							<button class="btn btn-default" type="button" onclick="javascript:history.back(-1);return false;">返回</button>
+						</div>
+					</div>
+				</form>
+			</div> 
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}<script>subnav("{:url('setting/os')}");</script>{/block}

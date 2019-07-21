@@ -1,0 +1,114 @@
+{extend name="base/public"}
+{block name="title"}用户资料{/block}
+{block name="breadcrumb"}<ol class="breadcrumb pull-left"><li><a href="{:url('index/index')}">主页</a></li><li><a href="{:url('member/index')}">用户</a></li><li class="active">资料</li></ol>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">用户资料</h3></div>
+			<div class="panel-body">
+				<form class="form-horizontal" role="form" method="post">
+					<div class="form-group">
+						<label class="col-md-1 control-label">用户名</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.username}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">昵称</label>
+						<div class="col-md-10"><input type="text" name="nickname" class="form-control" value="{$user.nickname}"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">姓名</label>
+						<div class="col-md-10"><input type="text" name="realname" class="form-control" value="{$user.realname}"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">注册时间</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.create_time|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">注册IP</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.ip}</p></div>
+					</div>
+					{neq name="user.update_time" value="0"}
+					<div class="form-group">
+						<label class="col-md-1 control-label">更新时间</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.update_time|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					{/neq}
+					{neq name="user.login_time" value="0"}
+					<div class="form-group">
+						<label class="col-md-1 control-label">登录时间</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.login_time|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					{/neq}
+					<div class="form-group">
+						<label class="col-md-1 control-label">登录次数</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.login_count}</p></div>
+					</div>
+					{neq name="user.login_ip" value=""}
+					<div class="form-group">
+						<label class="col-md-1 control-label">登录IP</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.login_ip}</p></div>
+					</div>
+					{/neq}
+					<div class="form-group">
+						<label class="col-md-1 control-label">VIP等级</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.vip}</p></div>
+					</div>
+					{neq name="user.vip" value="0"}
+					<div class="form-group">
+						<label class="col-md-1 control-label">VIP开通</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.vip_join|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">VIP过期</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.vip_time|date='Y-m-d H:i:s'}</p></div>
+					</div>
+					{/neq}
+					<div class="form-group">
+						<label class="col-md-1 control-label">账户状态</label>
+						<div class="col-md-10"><p class="form-control-static">{$enum->color('userStatus',$user.status,'colorsA')|raw}</p></div>
+					</div>
+					{neq name="user.status" value="1"}
+					<div class="form-group">
+						<label class="col-md-1 control-label">封禁时间</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.lock_time|date='Y-m-d H:i:s'}</p></div>
+					</div>
+						{neq name="user.lock_tips" value=""}
+						<div class="form-group">
+							<label class="col-md-1 control-label">封禁原因</label>
+							<div class="col-md-10"><p class="form-control-static">{$user.lock_tips}</p></div>
+						</div>
+						{/neq}
+						{neq name="user.back_time" value="0"}
+						<div class="form-group">
+							<label class="col-md-1 control-label">恢复时间</label>
+							<div class="col-md-10"><p class="form-control-static">{$user.back_time|date='Y-m-d H:i:s'}</p></div>
+						</div>
+						{/neq}
+					{/neq}
+					<div class="form-group">
+						<label class="col-md-1 control-label">余额</label>
+						<div class="col-md-10"><p class="form-control-static">{$user.money}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">身份</label>
+						<div class="col-md-10"><p class="form-control-static">{$enum->color('userGroup',$user.group,'colorsA')|raw}</p></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">可创建服务器</label>
+						<div class="col-md-10"><input type="text" name="server" class="form-control" value="{$user.server}"></div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-offset-1 col-lg-10">
+							<input type="hidden" class="form-control" value="{$user.id}">
+							<button class="btn btn-success" type="submit">修改</button>
+							<button class="btn btn-default" type="button" onclick="javascript:history.back(-1);return false;">返回</button>
+						</div>
+					</div>
+				</form>
+			</div> 
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}<script>mainnav("{:url('member/index')}");</script>{/block}

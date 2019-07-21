@@ -1,0 +1,47 @@
+{extend name="base/public"}
+{block name="title"}添加配置{/block}
+{block name="breadcrumb"}<ol class="breadcrumb pull-left"><li><a href="{:url('index/index')}">主页</a></li><li><a href="{:url('setting/dc')}">位置</a></li><li class="active">添加配置</li></ol>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3 class="panel-title">添加配置</h3></div>
+			<div class="panel-body">
+				<form class="form-horizontal" role="form" method="post" action='add_host.html'>
+					<div class="form-group">
+						<label class="col-md-1 control-label">CPU</label>
+						<div class="col-md-8"><input type="text" name="cpu" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">内存</label>
+						<div class="col-md-8"><input type="text" name="ram" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">固态</label>
+						<div class="col-md-8"><input type="text" name="ssd" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">带宽</label>
+						<div class="col-md-8"><input type="text" name="bandwidth" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">VPSPLANID</label>
+						<div class="col-md-8"><input type="text" name="vpsplanid" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-1 control-label">价格/小时</label>
+						<div class="col-md-8"><input type="text" name="hour" class="form-control"></div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-offset-1 col-lg-10">
+							<button class="btn btn-success" type="submit">确认</button>
+							<button class="btn btn-default" type="button" onclick="javascript:history.back(-1);return false;">返回</button>
+						</div>
+					</div>
+				</form>
+			</div> 
+		</div>
+	</div>
+</div>
+{/block}
+{block name="script"}<script>subnav("{:url('setting/host')}");</script>{/block}

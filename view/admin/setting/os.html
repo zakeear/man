@@ -1,0 +1,136 @@
+{extend name="base/public"}
+{block name="title"}操作系统{/block}
+{block name="breadcrumb"}<ol class="breadcrumb pull-left"><li><a href="{:url('index/index')}">主页</a></li><li><a href="{:url('setting/dc')}">系统</a></li><li class="active">操作系统</li></ol>{/block}
+{block name="content"}
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-sm-6 pull-left"><h3 class="panel-title">操作系统</h3></div>
+					<div class="col-sm-6 pull-right"><h3 class="panel-title" style="text-align:right;"><a href="add_os.html" class="btn btn-success input-sm" style="line-height:1.0;">添加</a></h3></a></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+							<div class="row">
+								<form class="form-horizontal" action="os.html" method="get">
+									<div class="col-sm-6">
+										<div class="dataTables_length" id="datatable_length">
+											<label>
+												类型
+												<select name="fid" aria-controls="datatable" class="form-control input-sm m-l-5">
+													<option value="">所有</option>
+													{volist name='fa' id="vo"}
+													<option value="{$vo.id}" {if condition="$vo['id'] eq input('fid')"}selected="selected"{/if}>{$vo.name}</option>
+													{/volist}
+												</select>
+											</label>
+											<label>
+												状态
+												<select name="status" aria-controls="datatable" class="form-control input-sm m-l-5">
+													<option value="">所有</option>
+													{foreach $enum->withIdName('dcStatus') as $key=>$vo}
+													<option value="{$vo.id}" {if condition="$vo['id'] eq input('status')"}selected="selected"{/if}>{$vo.name}</option>
+													{/foreach}
+												</select>
+											</label>
+											<label class="m-l-10">
+												每页显示 
+												<select name="limit" aria-controls="datatable" class="form-control input-sm m-l-5">
+													<option value="10">10</option>
+													<option value="20" selected>20</option>
+													<option value="50">50</option>
+													<option value="100">100</option>
+												</select>
+											</label>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div id="datatable_filter" class="dataTables_filter">
+											<label>关键字:<input type="search" name="keywords" class="form-control input-sm search" placeholder="" value="{:input('keywords')}" aria-controls="datatable"></label>
+											<label><button type="submit" class="btn btn-primary input-sm" style="line-height:1.0;">搜索</button></label>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="row">
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="text-center">Id</th>
+												<th>系统</th>
+												<th>OSID</th>
+												<th>费用</th>
+												<th>状态</th>
+												<th>时间</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											{volist name='list' id="vo"}
+											<tr>
+												<td class="text-center">{$vo.id}</td>
+												<td>{$vo.name} {:os_fa($vo.fid)}</td>
+												<td>{$vo.osid}</td>
+												<td>{$vo.hour}/小时</td>
+												<td>{$enum->color('dcStatus',$vo['status'],'colorsA')|raw}</td>
+												<td>{$vo.time|date='Y-m-d H:i:s'}</td>
+												<td>
+													{eq name="vo.status" value='1'}
+													<a href="#" class="sa-sweetalert" data-url="{:url('del_os',['id'=>$vo['id']])}" data-text="确定要禁用该系统？">禁用</a> 
+													{/eq}
+													{eq name="vo.status" value='2'}
+													<a href="#" class="sa-sweetalert" data-url="{:url('back_os',['id'=>$vo['id']])}" data-text="确定要启用该系统？">启用</a> 
+													{/eq}
+												</td>
+											</tr>
+											{/volist}
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">共计{$list->total()}条，每页{$list->listRows()}条，当前第{$list->currentPage()}页</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="dataTables_paginate paging_simple_numbers">
+										{$list->render()|raw}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="style"}<link href="/static/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>{/block}
+{block name="script"}
+<script>
+$('.sa-sweetalert').click(function(){
+	var text=$(this).attr("data-text");
+	var url=$(this).attr("data-url");
+	swal({title:"操作确认",text:text,type:"warning",confirmButtonColor:"#dd6b55",confirmButtonText:"确定",cancelButtonText:"取消",closeOnCancel:true,showCancelButton:true},function(){
+		$.ajax({type:'get',url:url,success:function(data){
+			if(data.code==1){
+				swal("成功!",data.msg,"success");
+				$('.sa-confirm-button-container .confirm').click(function(){
+					window.location.reload()
+				});
+			}else{
+				swal("失败!",data.msg,"warning");
+			}
+		}});
+	});
+});
+subnav("{:url('setting/os')}");
+</script>
+{/block}

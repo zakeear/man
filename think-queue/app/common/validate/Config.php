@@ -20,7 +20,7 @@ class Config extends Validate{
 		'vultr_api.require'=>'请设置vultr网关',
 		'vultr_api.url'=>'vultr网关必须是URL',
 		'vultr_keys.require'=>'请设置vultr密钥',
-		'vultr_keys.url'=>'vultr密钥只能包含数字和字母',
+		'vultr_keys.alphaNum'=>'vultr密钥只能包含数字和字母',
 	];
 	protected $scene=[
 		'edit'=>['rate','month','is_buy','vultr_api','vultr_keys'],

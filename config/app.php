@@ -27,7 +27,7 @@ return [
 	// 默认时区
 	'default_timezone' => 'Asia/Shanghai',
 	// 异常页面的模板文件
-	'exception_tmpl' => app()->getAppPath() . '../public/pages/exception.html',
+	// 'exception_tmpl' => app()->getAppPath() . '../public/pages/exception.html',
 	// 成功跳转模板文件
 	'dispatch_success_tmpl' => app()->getAppPath() . '../public/pages/success.html',
 	// 错误跳转模板文件

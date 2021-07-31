@@ -21,9 +21,9 @@ return [
 			// 数据库名
 			'database' => Env::get('database.database', 'vps'),
 			// 用户名
-			'username' => Env::get('database.username', 'vps'),
+			'username' => Env::get('database.username', 'root'),
 			// 密码
-			'password' => Env::get('database.password', 'tsztB2zMAdmrmt6m'),
+			'password' => Env::get('database.password', '123456'),
 			// 端口
 			'hostport' => Env::get('database.hostport', '3306'),
 			// 数据库连接参数

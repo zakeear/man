@@ -1,7 +1,11 @@
 ThinkPHP 6.0
 ===============
 
-> 运行环境要求PHP7.1+。
+> 运行环境要求PHP7.1+，兼容PHP8.0。
+
+[官方应用服务市场](https://market.topthink.com) | [`ThinkAPI`——官方统一API服务](https://docs.topthink.com/think-api)
+
+ThinkPHPV6.0版本由[亿速云](https://www.yisu.com/)独家赞助发布。
 
 ## 主要新特性
 
@@ -21,7 +25,7 @@ ThinkPHP 6.0
 ## 安装
 
 ~~~
-composer create-project topthink/think tp 6.0.*-dev
+composer create-project topthink/think tp 6.0.*
 ~~~
 
 如果需要更新框架使用
@@ -43,7 +47,7 @@ ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
 
 本项目包含的第三方源码和二进制文件之版权信息另行标注。
 
-版权所有Copyright © 2006-2019 by ThinkPHP (http://thinkphp.cn)
+版权所有Copyright © 2006-2020 by ThinkPHP (http://thinkphp.cn)
 
 All rights reserved。
 

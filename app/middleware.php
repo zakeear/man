@@ -1,11 +1,16 @@
 <?php
+// 全局中间件定义文件
+use think\middleware\AllowCrossDomain;
+use think\middleware\LoadLangPack;
+use think\middleware\SessionInit;
+
 return [
 	// 全局请求缓存
-	//'think\middleware\CheckRequestCache',
+	// \think\middleware\CheckRequestCache::class,
 	// 多语言加载
-	//'think\middleware\LoadLangPack',
+	LoadLangPack::class,
 	// Session初始化
-	'think\middleware\SessionInit',
-	// 页面Trace调试
-	'think\middleware\TraceDebug',
+	SessionInit::class,
+	// 跨域请求
+	AllowCrossDomain::class
 ];

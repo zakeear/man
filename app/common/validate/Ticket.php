@@ -1,27 +1,28 @@
 <?php
+
 namespace app\common\validate;
+
 use think\Validate;
-class Ticket extends Validate{
-	protected $rule=[
-		'id'=>'require',
-		'type'=>'require|number|in:1,2,3,4,5',
-		'title'=>'require|chsDash',
-		'content'=>'require',
+
+class Ticket extends Validate
+{
+	protected $rule = [
+		'id' => 'require',
+		'type' => 'require|number|in:1,2,3,4,5',
+		'title' => 'require|chsDash',
+		'content' => 'require',
 	];
-	protected $message=[
-		'type.require'=>'请选择类型',
-		'type.number'=>'类型必须是一个数字',
-		'type.in'=>'类型错误',
-		'title.require'=>'请输入标题',
-		'title.chsDash'=>'标题不能有特殊字符',
-		'content.require'=>'请输入内容',
-		'type.require'=>'请选择工单',
-		'type.number'=>'工单id必须是一个数字',
-		'type.length'=>'工单id类型错误',
+	protected $message = [
+		'type.require' => '请选择类型',
+		'type.number' => '类型必须是一个数字',
+		'type.in' => '类型错误',
+		'title.require' => '请输入标题',
+		'title.chsDash' => '标题不能有特殊字符',
+		'content.require' => '请输入内容',
 	];
-	protected $scene=[
-		'detail'=>['id'],
-		'replay'=>['id','title','content'],
-		'add'=>['type','title','content'],
+	protected $scene = [
+		'detail' => ['id'],
+		'replay' => ['id', 'title', 'content'],
+		'add' => ['type', 'title', 'content'],
 	];
 }

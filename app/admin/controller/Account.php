@@ -122,7 +122,7 @@ class Account extends Base
 		if ($this->params['type'] == 1) {
 			$money = Db::name('user')->where(['username' => $this->params['username']])->inc('money', $this->params['money'])->update();
 		} else {
-			$money = Db::name('user')->where(['username' => $this->params['username']])->dec('money', $this->params['money'])->update;
+			$money = Db::name('user')->where(['username' => $this->params['username']])->dec('money', $this->params['money'])->update();
 		}
 		if (!$money) {
 			$this->error('入账失败');

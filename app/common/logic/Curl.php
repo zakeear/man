@@ -42,4 +42,5 @@ class Curl
 			return $result;
 		}
 	}
+
 }

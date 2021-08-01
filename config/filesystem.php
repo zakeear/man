@@ -1,5 +1,7 @@
 <?php
+
 use think\facade\Env;
+
 return [
 	'default' => Env::get('filesystem.driver', 'local'),
 	'disks' => [

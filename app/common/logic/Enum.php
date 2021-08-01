@@ -47,15 +47,11 @@ class Enum
 	//检查
 	protected function checkArr($arr)
 	{
-		if (!isset($this->$arr) && !$this->$arr) {
-			return '';
-		}
 	}
 
 	//键值
 	public function value($arr = '', $keys = 0): string
 	{
-		$this->checkArr($arr);
 		if (!isset($this->$arr[$keys])) {
 			return '';
 		}
@@ -65,7 +61,9 @@ class Enum
 	//颜色
 	public function color($arr = '', $keys = 0, $color = 'colorsA', $array = []): string
 	{
-		$this->checkArr($arr);
+		if (!isset($this->$arr[$keys])) {
+			return '';
+		}
 		$color = isset($this->$color) && $this->$color ? $color : 'colorsA';
 		$num = $keys >= 1 && $keys <= 20 ? $keys : 1;
 		if ($array) {
@@ -78,14 +76,12 @@ class Enum
 	//遍历一维数组
 	public function arrays($arr = '')
 	{
-		$this->checkArr($arr);
 		return $this->$arr;
 	}
 
 	//遍历二维数组
 	public function withIdName($arr = ''): array
 	{
-		$this->checkArr($arr);
 		$i = 0;
 		$result = [];
 		foreach ($this->$arr as $k => $v) {
@@ -98,7 +94,6 @@ class Enum
 	//自定义遍历二维数组
 	public function ArrKeys($arr = '', $keys = ''): array
 	{
-		$this->checkArr($arr);
 		$str = explode(',', $keys);
 		$i = 0;
 		$result = [];

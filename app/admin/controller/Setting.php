@@ -9,13 +9,20 @@
 namespace app\admin\controller;
 
 use app\Base;
+use Exception;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\facade\Db;
 use think\facade\View;
 
 class Setting extends Base
 {
 	// 位置
-	public function dc()
+	/**
+	 * @throws DbException
+	 */
+	public function dc(): string
 	{
 		// 定义
 		$where = [];
@@ -43,6 +50,12 @@ class Setting extends Base
 	}
 
 	// 添加位置
+
+	/**
+	 * @throws DataNotFoundException
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 */
 	public function add_dc()
 	{
 		if ($this->request->isPost()) {
@@ -55,10 +68,10 @@ class Setting extends Base
 				$this->error('请输入DCID!');
 			}
 			// 组装
-			$data = ['name' => $this->params['name'], 'DCID' => $this->params['dcid'], 'status' => 1, 'time' => $this->timestamp(10)];
+			$data = ['name' => $this->params['name'], 'DCID' => $this->params['dcid'], 'status' => 1, 'time' => $this->timestamp()];
 			// 父级
 			if (isset($this->params['fid']) && $this->params['fid']) {
-				$where['fid'] = $this->params['fid'];
+				// $where['fid'] = $this->params['fid'];
 			}
 			// 检验
 			$check = Db::name('dc')->where(['DCID' => $this->params['dcid']])->find();
@@ -76,7 +89,7 @@ class Setting extends Base
 				$this->error('添加失败!');
 			}
 			// 日志
-			$this->logs()->database(0, 4, $this->request->ip(), '添加位置【' . $data['name'] . '】', $this->admin['id'], 0);
+			$this->logs()->database(0, 4, $this->request->ip(), '添加位置【' . $data['name'] . '】', $this->admin['id']);
 			$this->success('添加成功', $this->app->route->buildUrl('dc'));
 		} else {
 			// 变量
@@ -87,6 +100,12 @@ class Setting extends Base
 	}
 
 	// 禁用位置
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function del_dc()
 	{
 		// 主机
@@ -100,11 +119,17 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), '下架位置【' . $dc['name'] . '】', $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), '下架位置【' . $dc['name'] . '】', $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 恢复位置
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DataNotFoundException
+	 * @throws DbException
+	 */
 	public function back_dc()
 	{
 		// 位置
@@ -118,12 +143,16 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), '上架位置【' . $dc['name'] . '】', $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), '上架位置【' . $dc['name'] . '】', $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 系统
-	public function os()
+
+	/**
+	 * @throws DbException
+	 */
+	public function os(): string
 	{
 		// 定义
 		$where = [];
@@ -151,7 +180,13 @@ class Setting extends Base
 	}
 
 	// 添加系统
-	public function add_os()
+
+	/**
+	 * @throws DataNotFoundException
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 */
+	public function add_os(): string
 	{
 		if ($this->request->isPost()) {
 			// 名称
@@ -167,7 +202,7 @@ class Setting extends Base
 				$this->error('请选择系统类型!');
 			}
 			// 组装
-			$data = ['fid' => $this->params['fid'], 'name' => $this->params['name'], 'OSID' => $this->params['osid'], 'status' => 1, 'time' => $this->timestamp(10)];
+			$data = ['fid' => $this->params['fid'], 'name' => $this->params['name'], 'OSID' => $this->params['osid'], 'status' => 1, 'time' => $this->timestamp()];
 			// 价格
 			if (isset($this->params['hour']) && $this->params['hour'] && is_numeric($this->params['hour'])) {
 				$data['hour'] = $this->params['hour'];
@@ -188,7 +223,7 @@ class Setting extends Base
 				$this->error('添加失败!');
 			}
 			// 日志
-			$this->logs()->database(0, 4, $this->request->ip(), '添加系统【' . $data['name'] . '】', $this->admin['id'], 0);
+			$this->logs()->database(0, 4, $this->request->ip(), '添加系统【' . $data['name'] . '】', $this->admin['id']);
 			$this->success('添加成功', $this->app->route->buildUrl('os'));
 		}
 		// 变量
@@ -198,6 +233,12 @@ class Setting extends Base
 	}
 
 	// 禁用系统
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function del_os()
 	{
 		// 系统
@@ -211,11 +252,17 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), '下架系统【' . $os['name'] . '】', $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), '下架系统【' . $os['name'] . '】', $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 恢复系统
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function back_os()
 	{
 		// 系统
@@ -229,12 +276,16 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), '上架系统【' . $os['name'] . '】', $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), '上架系统【' . $os['name'] . '】', $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 配置
-	public function host()
+
+	/**
+	 * @throws DbException
+	 */
+	public function host(): string
 	{
 		// 定义
 		$where = [];
@@ -258,7 +309,13 @@ class Setting extends Base
 	}
 
 	// 添加配置
-	public function add_host()
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
+	public function add_host(): string
 	{
 		if ($this->request->isPost()) {
 			// CPU
@@ -286,7 +343,7 @@ class Setting extends Base
 				$this->error('请输入价格');
 			}
 			// 组装
-			$data = ['cpu' => $this->params['cpu'], 'ram' => $this->params['ram'], 'ssd' => $this->params['ssd'], 'bandwidth' => $this->params['bandwidth'], 'hour' => $this->params['hour'], 'vpsplanid' => $this->params['vpsplanid'], 'status' => 1, 'time' => $this->timestamp(10)];
+			$data = ['cpu' => $this->params['cpu'], 'ram' => $this->params['ram'], 'ssd' => $this->params['ssd'], 'bandwidth' => $this->params['bandwidth'], 'hour' => $this->params['hour'], 'vpsplanid' => $this->params['vpsplanid'], 'status' => 1, 'time' => $this->timestamp()];
 			// 检验
 			$check = Db::name('host')->where(['vpsplanid' => $this->params['vpsplanid']])->find();
 			if ($check) {
@@ -298,7 +355,7 @@ class Setting extends Base
 				$this->error('添加失败!');
 			}
 			// 日志
-			$this->logs()->database(0, 4, $this->request->ip(), '添加配置【' . $data['vpsplanid'] . '】', $this->admin['id'], 0);
+			$this->logs()->database(0, 4, $this->request->ip(), '添加配置【' . $data['vpsplanid'] . '】', $this->admin['id']);
 			$this->success('添加成功', $this->app->route->buildUrl('host'));
 		}
 		// 视图
@@ -306,6 +363,12 @@ class Setting extends Base
 	}
 
 	// 禁用配置
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function del_host()
 	{
 		// 配置
@@ -319,11 +382,17 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), "下架配置【" . get_host($host['vpsplanid']) . "】", $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), "下架配置【" . get_host($host['vpsplanid']) . "】", $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 恢复配置
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function back_host()
 	{
 		// 配置
@@ -337,12 +406,16 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), "上架配置【" . get_host($host['vpsplanid']) . "】", $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), "上架配置【" . get_host($host['vpsplanid']) . "】", $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 快照
-	public function snapshot()
+
+	/**
+	 * @throws DbException
+	 */
+	public function snapshot(): string
 	{
 		// 定义
 		$where = [];
@@ -366,7 +439,13 @@ class Setting extends Base
 	}
 
 	// 添加快照
-	public function add_snapshot()
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
+	public function add_snapshot(): string
 	{
 		if ($this->request->isPost()) {
 			// 名称
@@ -386,7 +465,7 @@ class Setting extends Base
 				$this->error('请输入系统默认!');
 			}
 			// 组装
-			$data = ['name' => $this->params['name'], 'password' => $this->params['password'], 'snapshotid' => $this->params['snapshotid'], 'port' => $this->params['port'], 'status' => 1, 'time' => $this->timestamp(10)];
+			$data = ['name' => $this->params['name'], 'password' => $this->params['password'], 'snapshotid' => $this->params['snapshotid'], 'port' => $this->params['port'], 'status' => 1, 'time' => $this->timestamp()];
 			// 重复检测
 			$check = Db::name('snapshot')->where(['snapshotid' => $this->params['snapshotid']])->find();
 			if ($check) {
@@ -404,6 +483,12 @@ class Setting extends Base
 	}
 
 	// 禁用快照
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function del_snapshot()
 	{
 		// 配置
@@ -417,11 +502,17 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), "下架快照【" . get_snapshot($snapshot['snapshotid']) . "】", $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), "下架快照【" . get_snapshot($snapshot['snapshotid']) . "】", $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 恢复快照
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function back_snapshot()
 	{
 		// 配置
@@ -435,12 +526,12 @@ class Setting extends Base
 			$this->result(0, '操作失败!');
 		}
 		// 日志
-		$this->logs()->database(0, 4, $this->request->ip(), "上架快照【" . get_snapshot($snapshot['snapshotid']) . "】", $this->admin['id'], 0);
+		$this->logs()->database(0, 4, $this->request->ip(), "上架快照【" . get_snapshot($snapshot['snapshotid']) . "】", $this->admin['id']);
 		$this->result(1, '操作成功!');
 	}
 
 	// 系统设置
-	public function config()
+	public function config(): string
 	{
 		if ($this->request->isPost()) {
 			// 验证数据
@@ -449,7 +540,7 @@ class Setting extends Base
 				$this->error($result);
 			}
 			// 组装
-			$data = ['rate' => $this->params['rate'], 'month' => $this->params['month'], 'is_buy' => $this->params['is_buy'], 'vultr_api' => $this->params['vultr_api'], 'vultr_keys' => $this->params['vultr_keys'], 'status' => 1, 'time' => $this->timestamp(10)];
+			$data = ['rate' => $this->params['rate'], 'month' => $this->params['month'], 'is_buy' => $this->params['is_buy'], 'vultr_api' => $this->params['vultr_api'], 'vultr_keys' => $this->params['vultr_keys'], 'status' => 1, 'time' => $this->timestamp()];
 			Db::startTrans();
 			try {
 				// 清理
@@ -459,9 +550,9 @@ class Setting extends Base
 				// 提交
 				Db::commit();
 				// 记录日志
-				$this->logs()->database(0, 2, $this->request->ip(), '修改系统配置', $this->admin['id'], 0);
+				$this->logs()->database(0, 2, $this->request->ip(), '修改系统配置', $this->admin['id']);
 				$this->success('修改成功！', $this->app->route->buildUrl('config'));
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				Db::rollback();
 				$this->success('修改成功');
 			}

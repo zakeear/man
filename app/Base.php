@@ -25,7 +25,6 @@ use think\facade\Cache;
 use think\Model;
 use think\Response;
 use think\Validate;
-use think\facade\Session;
 use think\facade\Db;
 use think\facade\Config;
 
@@ -56,26 +55,31 @@ abstract class Base
 	protected $middleware = [];
 
 	/**
-	 * @var array|mixed
+	 * @var mixed
 	 */
-	private $params;
+	protected $params;
 
 	/**
 	 * @var array|Db|Model|null
 	 */
-	private $user;
+	protected $user;
 
 	/**
 	 * @var array|mixed
 	 */
-	private $admin;
+	protected $admin;
 
 	/**
 	 * @var array|mixed|Db|Model
 	 */
-	private $config;
+	protected $config;
 
-	private $appName;
+	protected $appName;
+
+	/**
+	 * @var array
+	 */
+	protected $ticket;
 
 	/**
 	 * 构造方法
@@ -94,9 +98,9 @@ abstract class Base
 		// 传参
 		$this->params = $this->request->param();
 		// 用户
-		$this->user = Session::get('user.id') ? Db::name('user')->cache(true, 5)->where(['id' => Session::get('user.id')])->find() : [];
+		$this->user = session('user.id') ? Db::name('user')->cache(true, 5)->where(['id' => session('user.id')])->find() : [];
 		// 管理员
-		$this->admin = Session::get('admin') ? Session::get('admin') : [];
+		$this->admin = session('admin') ? session('admin') : [];
 		// 工单
 		$this->ticket = $this->user ? Db::name('ticket')->cache(true, 5)->where('uid', '=', $this->user['id'])->where('status', '<>', 3)->select()->toArray() : [];
 		// 应用名
@@ -104,20 +108,20 @@ abstract class Base
 		// 登录状态
 		if ($this->appName == 'admin') {
 			if ($this->request->controller() <> 'User') {
-				if (Session::has('admin') !== true) {
-					$this->redirect('user/login');
+				if (session('?admin') !== true) {
+					$this->redirect('./admin/user/login.html');
 				}
-				if (Session::get('admin_lock') == 1) {
-					$this->redirect('user/screen');
+				if (session('admin_lock') == 1) {
+					$this->redirect('./admin/user/screen.html');
 				}
 			}
 		} else {
 			if ($this->request->controller() <> 'User') {
-				if (Session::has('user') !== true) {
-					$this->redirect('user/login');
+				if (session('?user') !== true) {
+					$this->redirect('./index/user/login.html');
 				}
-				if (Session::get('user_lock') == 1) {
-					$this->redirect('user/screen');
+				if (session('user_lock') == 1) {
+					$this->redirect('./index/user/screen.html');
 				}
 			}
 		}
@@ -343,9 +347,9 @@ abstract class Base
 	 * @param array $args 参数
 	 * @throws mixed
 	 */
-	public function __call(string $method, array $args)
+	/*public function __call(string $method, array $args)
 	{
 		$this->redirect('/../pages/404.html');
-	}
+	}*/
 
 }

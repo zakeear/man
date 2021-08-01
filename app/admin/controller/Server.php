@@ -56,7 +56,7 @@ class Server extends Base
 			//列表
 			$list = Db::name('server')->where($where)->order('id desc')->paginate($pageSize, false, ['query' => $this->params]);
 		}
-		$list->each(function ($item, $key) {
+		$list->each(function ($item) {
 			//用户
 			if ($item['uid']) {
 				$member = Db::name('user')->field('id,user_name,nick_name,real_name')->where(['id' => $item['uid']])->find();
@@ -79,7 +79,7 @@ class Server extends Base
 	 * @throws ModelNotFoundException
 	 * @throws DbException
 	 */
-	public function detail()
+	public function detail(): string
 	{
 		if ($this->request->isPost()) {
 			//验证数据

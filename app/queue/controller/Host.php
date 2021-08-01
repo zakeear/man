@@ -5,42 +5,47 @@
 * @version v0.1.5
 * @time 2019-06-10
 */
+
 namespace app\queue\controller;
+
 use think\Exception;
 use think\facade\Db;
 use think\facade\Queue;
-class Host{
+
+class Host
+{
 	/**
 	 * 添加队列
 	 * @access public
-	 * @param int $subid 主机id
+	 * @param int $sub_id 主机id
 	 * @param string $type 任务名
 	 * @param int $times 延时秒数
-	 * @throws \think\Exception
+	 * @throws Exception
 	 */
-	public function addTask(int $subid=0,string $type='server',int $times=0){
-		$server=Db::name('server')->where(['subid'=>$subid])->find();
-		if(!$server){
+	public function addTask(int $sub_id = 0, string $type = 'server', int $times = 0)
+	{
+		$server = Db::name('server')->where(['sub_id' => $sub_id])->find();
+		if (!$server) {
 			exit;
 		}
-		switch($type){
+		switch ($type) {
 			case 'server':
-				$jobHandlerClassName='app\queue\job\Money@fire';
-				$jobDataArr=['submit'=>time(),'doit'=>time()+$times,'subid'=>$server['subid'],'hostname'=>$server['hostname']];
-				$jobQueueName="Money";
+				$jobHandlerClassName = 'app\queue\job\Money@fire';
+				$jobDataArr = ['submit' => time(), 'doit' => time() + $times, 'sub_id' => $server['sub_id'], 'hostname' => $server['hostname']];
+				$jobQueueName = "Money";
 				break;
 			case 'destroy':
-				$jobHandlerClassName='app\queue\job\Destroy@fire';
-				$jobDataArr=['submit'=>time(),'doit'=>time()+$times,'subid'=>$server['subid'],'hostname'=>$server['hostname']];
-				$jobQueueName="Destroy";
+				$jobHandlerClassName = 'app\queue\job\Destroy@fire';
+				$jobDataArr = ['submit' => time(), 'doit' => time() + $times, 'sub_id' => $server['sub_id'], 'hostname' => $server['hostname']];
+				$jobQueueName = "Destroy";
 				break;
 			default:
 				break;
 		}
-		if($times==0){
-			$isPushed=Queue::push($jobHandlerClassName,$jobDataArr,$jobQueueName);
-		}else{
-			$isPushed=Queue::later($times,$jobHandlerClassName,$jobDataArr,$jobQueueName);
+		if ($times == 0) {
+			Queue::push($jobHandlerClassName, $jobDataArr, $jobQueueName);
+		} else {
+			Queue::later($times, $jobHandlerClassName, $jobDataArr, $jobQueueName);
 		}
 	}
 }

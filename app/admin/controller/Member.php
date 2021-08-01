@@ -96,7 +96,7 @@ class Member extends Base
 		}
 		Db::startTrans();
 		try {
-			Db::name('user')->where(['id' => $this->params['id']])->update(['status' => 2, 'lock_uid' => 1, 'lock_time' => $this->timestamp(10)]);
+			Db::name('user')->where(['id' => $this->params['id']])->update(['status' => 2, 'lock_uid' => 1, 'lock_time' => $this->timestamp()]);
 			Db::commit();
 			$this->logs()->database(1, 2, $this->request->ip(), '禁用【' . $user['username'] . '】', $this->admin['id']);
 		} catch (Exception $e) {

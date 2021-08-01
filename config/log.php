@@ -1,10 +1,12 @@
 <?php
+
 use think\facade\Env;
+
 return [
 	// 默认日志记录通道
 	'default' => Env::get('log.channel', 'file'),
 	// 日志记录级别
-	'level' => ['debug','notice','warning','error','critical','alert','emergency'],
+	'level' => ['debug', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'],
 	// 日志类型记录的通道 ['error'=>'email',...]
 	'type_channel' => [],
 	// 关闭全局日志写入
@@ -21,7 +23,7 @@ return [
 			// 单文件日志写入
 			'single' => false,
 			// 独立日志级别
-			'apart_level' => ['debug','warning','error','critical','alert','emergency'],
+			'apart_level' => ['debug', 'warning', 'error', 'critical', 'alert', 'emergency'],
 			// 最大日志文件数量
 			'max_files' => 0,
 			// 使用JSON格式记录

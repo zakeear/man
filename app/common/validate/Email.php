@@ -11,6 +11,7 @@ class Email extends Validate
 		'subject' => 'require|min:6',
 		'message' => 'require|min:6',
 	];
+
 	protected $message = [
 		'email.require' => '请输入接受邮箱',
 		'email.email' => '邮箱输入错误',
@@ -19,6 +20,7 @@ class Email extends Validate
 		'message.require' => '请输入邮件内容',
 		'message.min' => '邮件内容必须大于6个字符',
 	];
+
 	protected $scene = [
 		'send' => ['email', 'subject', 'message'],
 	];

@@ -12,6 +12,7 @@ class Ticket extends Validate
 		'title' => 'require|chsDash',
 		'content' => 'require',
 	];
+
 	protected $message = [
 		'type.require' => '请选择类型',
 		'type.number' => '类型必须是一个数字',
@@ -20,6 +21,7 @@ class Ticket extends Validate
 		'title.chsDash' => '标题不能有特殊字符',
 		'content.require' => '请输入内容',
 	];
+
 	protected $scene = [
 		'detail' => ['id'],
 		'replay' => ['id', 'title', 'content'],

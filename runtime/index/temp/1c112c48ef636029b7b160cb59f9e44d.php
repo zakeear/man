@@ -1,9 +1,10 @@
+<?php /*a:1:{s:44:"E:\wwwroot\man\view\index\user\register.html";i:1627725523;}*/ ?>
 <!DOCTYPE html>
-<html lang="">
+<html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>修改密码</title>
+	<title>注册新的账号</title>
 	<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="/static/css/core.css" rel="stylesheet" type="text/css">
 	<link href="/static/css/responsive.css" rel="stylesheet" type="text/css">
@@ -18,32 +19,28 @@
 	<div class="panel panel-color panel-primary panel-pages">
 		<div class="panel-heading bg-img"> 
 			<div class="bg-overlay"></div>
-			<h3 class="text-center m-t-10 text-white">修改密码</h3>
+			<h3 class="text-center m-t-10 text-white">注册新的账号</h3>
 		</div> 
 		<div class="panel-body">
-		<form class="form-horizontal m-t-20" action="email.html" method="post">
-			<div class="alert alert-info alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>请前往 <b>{:$get['username']}</b> 查收邮件。
-			</div>
+		<form class="form-horizontal m-t-20" action="register.html" method="post">
 			<div class="form-group">
 				<div class="col-xs-12">
-					<input class="form-control input-lg" type="text" name="verify_code" required="" placeholder="邮件确认码">
+					<input class="form-control input-lg" type="text" name="username" required="" placeholder="用户账号">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-xs-12">
-					<input class="form-control input-lg" type="password" name="password" required="" placeholder="输入新密码">
+					<input class="form-control input-lg" type="password" name="password" required="" placeholder="登录密码">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-xs-12">
-					<input class="form-control input-lg" type="password" name="repass" required="" placeholder="确认新密码">
+					<input class="form-control input-lg" type="password" name="repass" required="" placeholder="确认密码">
 				</div>
 			</div>
 			<div class="form-group text-center m-t-40">
 				<div class="col-xs-12">
-					<input type="hidden" name="username" id="username" value="{:$get['username']}">
-					<button class="btn btn-primary btn-lg w-lg" type="submit">确定</button>
+					<button class="btn btn-primary btn-lg w-lg" type="submit">注册</button>
 				</div>
 			</div>
 			<div class="form-group m-t-30">
@@ -55,7 +52,7 @@
 		</div>
 	</div>
 </div>
-<script></script>
+<script>var resizefunc=[];</script>
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 </body>

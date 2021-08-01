@@ -1,3 +1,4 @@
+<?php /*a:1:{s:41:"E:\wwwroot\man\view\index\user\login.html";i:1627806556;}*/ ?>
 <!DOCTYPE html>
 <html lang="">
 <head>
@@ -29,7 +30,9 @@
 				</div>
 				<div class="form-group">
 					<div class="col-xs-12">
-						<input class="form-control input-lg" name="password" type="password" required="" placeholder="登录密码">
+						<label>
+							<input class="form-control input-lg" name="password" type="password" required="" placeholder="登录密码">
+						</label>
 					</div>
 				</div>
 				<div class="form-group text-center m-t-40">

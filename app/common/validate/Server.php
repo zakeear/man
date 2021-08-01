@@ -15,6 +15,7 @@ class Server extends Validate
 		'id' => 'require|integer|min:1|max:10',
 		'month' => 'require|integer|in:1,2,3,4,5,6,7,8,9,10,11,12,24,36,60,120',
 	];
+
 	protected $message = [
 		'DCID.require' => '请选择服务器位置',
 		'DCID.integer' => 'DCID必须是一个数字',
@@ -33,6 +34,7 @@ class Server extends Validate
 		'month.integer' => '购买时长必须是一个数字',
 		'month.in' => '购买时长错误',
 	];
+
 	protected $scene = [
 		'add' => ['DCID', 'hostname', 'enable_ipv6'],
 		'regitser' => ['username', 'password', 'repass'],

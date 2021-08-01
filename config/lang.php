@@ -1,5 +1,7 @@
 <?php
+
 use think\facade\Env;
+
 return [
 	// 默认语言
 	'default_lang' => Env::get('lang.default_lang', 'zh-cn'),

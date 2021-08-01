@@ -22,9 +22,9 @@ class Email
 		'name' => '',//发件人
 		'altbody' => '邮箱验证码，如果您看见的是本条内容请与管理员联系！',//邮件默认内容，当收件人屏蔽了内容或某些意外情况时展现
 	];
-	//发送
 
 	/**
+	 * 发送
 	 * @throws phpmailerException
 	 */
 	public function send($data = [])
@@ -58,4 +58,5 @@ class Email
 			return $status;
 		}
 	}
+
 }

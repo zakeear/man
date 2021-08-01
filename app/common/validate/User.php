@@ -44,6 +44,7 @@ class User extends Validate
 		'keys.require' => '请输入卡密密码',
 		'keys.chsDash' => '卡密密码格式不对',
 	];
+
 	protected $scene = [
 		'login' => ['username', 'password'],
 		'register' => ['username', 'password', 'repass'],

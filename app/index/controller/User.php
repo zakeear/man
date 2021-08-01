@@ -7,18 +7,29 @@
 */
 namespace app\index\controller;
 use app\Base;
+use phpmailerException;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\facade\Session;
 use think\facade\Db;
 use think\facade\View;
+use think\helper\Str;
+
 class User extends Base{
 	//注册
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function register(){
 		if(!$this->request->isPost()){
 			//试图
 			return View::fetch();
 		}
 		//验证数据
-		$result=$this->validate($this->params,'app\common\validate\User.regitser');
+		$result=$this->validate($this->params,'app\common\validate\User.register');
 		if($result !== true){
 			$this->error($result);
 		}
@@ -27,7 +38,7 @@ class User extends Base{
 		if($user){
 			$this->error('用户已经注册');
 		}
-		$data=['username'=>$this->params['username'],'safe_email'=>$this->params['username'],'password'=>md5($this->params['password']),'create_time'=>$this->timestamp(10),'ip'=>$this->request->ip(),'safe_code'=>\think\helper\Str::random(8)];
+		$data=['username'=>$this->params['username'],'safe_email'=>$this->params['username'],'password'=>md5($this->params['password']),'create_time'=>$this->timestamp(),'ip'=>$this->request->ip(),'safe_code'=> Str::random(8)];
 		$add=Db::name('user')->insertGetId($data);
 		if(!$add){
 			$this->error('注册失败');
@@ -43,6 +54,12 @@ class User extends Base{
 		}
 	}
 	//登录
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function login(){
 		if(!$this->request->isPost()){
 			//视图
@@ -64,11 +81,11 @@ class User extends Base{
 		if($user['status'] <> 1){
 			$this->error('用户被禁止登录');
 		}
-		if($user['login_time'] && $this->timestamp(10)-$user['login_time']<=3){
+		if($user['login_time'] && $this->timestamp()-$user['login_time']<=3){
 			$this->error('请勿频繁登录');
 		}
 		//登录
-		$data=['username'=>$user['username'],'login_count'=>$user['login_count']+1,'login_time'=>$this->timestamp(10),'login_ip'=>$this->request->ip()];
+		$data=['username'=>$user['username'],'login_count'=>$user['login_count']+1,'login_time'=>$this->timestamp(),'login_ip'=>$this->request->ip()];
 		$update=Db::name('user')->where('username',$this->params['username'])->update($data);
 		if(!$update){
 			$this->error('登录失败');
@@ -81,6 +98,13 @@ class User extends Base{
 		$this->success('欢迎回来，'.$user['username'],$this->app->route->buildUrl('server/index'));
 	}
 	//找回
+
+	/**
+	 * @throws DataNotFoundException
+	 * @throws phpmailerException
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 */
 	public function forget(){
 		if(!$this->request->isPost()){
 			//视图
@@ -96,11 +120,11 @@ class User extends Base{
 		if(!$user){
 			$this->error('用户不存在');
 		}
-		if(!$user['verify_lock'] && $this->timestamp(10)-$user['verify_lock']<60){
+		if(!$user['verify_lock'] && $this->timestamp()-$user['verify_lock']<60){
 			$this->error('请勿重复操作');
 		}
-		$verify_code=number_code(6);;
-		$add=Db::name('user')->where('username',$this->params['username'])->update(['verify_code'=>$verify_code,'verify_lock'=>$this->timestamp(10),'verify_time'=>$this->timestamp(10)+900]);
+		$verify_code=number_code(6);
+		$add=Db::name('user')->where('username',$this->params['username'])->update(['verify_code'=>$verify_code,'verify_lock'=>$this->timestamp(),'verify_time'=>$this->timestamp()+900]);
 		if(!$add){
 			$this->error('找回失败');
 		}
@@ -112,6 +136,12 @@ class User extends Base{
 		$this->success('邮件已经发送',$this->app->route->buildUrl('email',['user'=>$this->params['username']]));
 	}
 	//验证邮箱
+
+	/**
+	 * @throws DataNotFoundException
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 */
 	public function email(){
 		if($this->request->isPost()){
 			//验证数据
@@ -124,13 +154,13 @@ class User extends Base{
 			if(!$user){
 				$this->error('用户不存在');
 			}
-			if($this->timestamp(10)>$user['verify_time']){
+			if($this->timestamp()>$user['verify_time']){
 				$this->error('已经过期','login');
 			}
 			if($this->params['verify_code']<>$user['verify_code']){
 				$this->error('邮件确认码不对');
 			}
-			$add=Db::name('user')->where('username',$this->params['username'])->update(['password'=>md5($this->params['password']),'verify_lock'=>$this->timestamp(10),'verify_code'=>null,'create_time'=>$this->timestamp(10)]);
+			$add=Db::name('user')->where('username',$this->params['username'])->update(['password'=>md5($this->params['password']),'verify_lock'=>$this->timestamp(),'verify_code'=>null,'create_time'=>$this->timestamp()]);
 			if(!$add){
 				$this->error('修改失败');
 			}
@@ -146,7 +176,7 @@ class User extends Base{
 			if(!$user){
 				$this->redirect('user/login');
 			}
-			if($this->timestamp(10) > $user['verify_time']){
+			if($this->timestamp() > $user['verify_time']){
 				$this->error('已经过期',$this->app->route->buildUrl('forget'));
 			}
 			//变量
@@ -177,6 +207,12 @@ class User extends Base{
 		}
 	}
 	//解锁
+
+	/**
+	 * @throws ModelNotFoundException
+	 * @throws DbException
+	 * @throws DataNotFoundException
+	 */
 	public function unlock(){
 		//验证数据
 		$result=$this->validate($this->params,'app\common\validate\User.lock');
